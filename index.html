@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random title</title>
+
+<style>
+body{
+    margin:0;
+    background:#000;
+    font-family:Arial, sans-serif;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* ===== LOGIN ===== */
+#registerPage{
+    text-align:center;
+}
+
+.card{
+    background:#111;
+    padding:30px;
+    border-radius:15px;
+    border:1px solid #222;
+    width:300px;
+}
+
+.profile{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:#222;
+    margin:0 auto 10px auto;
+    overflow:hidden;
+    border:2px solid white;
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.upload-label{
+    display:inline-block;
+    margin-top:8px;
+    font-size:12px;
+    color:#aaa;
+    cursor:pointer;
+}
+
+input[type="file"]{
+    display:none;
+}
+
+input[type="text"]{
+    margin-top:10px;
+    width:100%;
+    padding:8px;
+    background:#222;
+    border:1px solid #333;
+    color:white;
+    border-radius:5px;
+}
+
+button{
+    margin-top:15px;
+    width:100%;
+    padding:10px;
+    background:white;
+    color:black;
+    border:none;
+    border-radius:5px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ===== VIDEO PAGE ===== */
+#videoPage{
+    display:none;
+}
+
+/* FLIP CARD */
+.flip-container{
+    perspective:1000px;
+    width:350px;
+    height:220px;
+}
+
+.flipper{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 1s;
+}
+
+.flip{
+    transform:rotateY(180deg);
+}
+
+.front, .back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    backface-visibility:hidden;
+    border-radius:15px;
+    overflow:hidden;
+    border:1px solid white;
+}
+
+.front video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.back{
+    background:black;
+    transform:rotateY(180deg);
+    padding:15px;
+    font-family:monospace;
+    font-size:14px;
+    box-sizing:border-box;
+}
+
+#terminal{
+    white-space:pre-wrap;
+}
+
+.cursor{
+    display:inline-block;
+    width:8px;
+    background:white;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    0%,50%,100%{opacity:1;}
+    25%,75%{opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="registerPage">
+    <div class="card">
+        <div class="profile">
+            <img id="preview">
+        </div>
+
+        <label class="upload-label" for="fileInput">welcome hatz</label>
+        <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+
+        <h3 style="margin-top:15px;">Login</h3>
+
+        <input type="text" id="nama" placeholder="Masukkan Nama">
+        <button onclick="start()">mulai</button>
+    </div>
+</div>
+
+<!-- VIDEO PAGE -->
+<div id="videoPage">
+    <div class="flip-container">
+        <div class="flipper" id="flipBox">
+            
+            <!-- DEPAN -->
+            <div class="front">
+                <video id="vid" controls>
+                    <source src="https://files.catbox.moe/n2qeel.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- BELAKANG -->
+            <div class="back">
+                <div id="terminal"></div><div class="cursor"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+function previewImage(event){
+    const reader = new FileReader();
+    reader.onload = function(){
+        document.getElementById("preview").src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function start(){
+    document.getElementById("registerPage").style.display="none";
+    document.getElementById("videoPage").style.display="block";
+}
+
+const video = document.getElementById("vid");
+const flipBox = document.getElementById("flipBox");
+const terminal = document.getElementById("terminal");
+
+/* EDIT PESAN DI SINI */
+const message =
+"Makna lagu “A New Kind of Love” – Frou Frou adalah tentang merasakan cinta yang berbeda dari sebelumnya—lebih dalam, lebih tulus, dan terasa seperti menemukan sesuatu yang baru dalam hidup. Lagu ini menggambarkan perasaan kagum dan hangat saat seseorang hadir dan membuat hati terbuka kembali. Cintanya bukan sekadar suka biasa, tapi seperti pengalaman emosional yang segar dan penuh harapan.";
+
+video.onended = function(){
+    flipBox.classList.add("flip");
+    typeEffect(message);
+};
+
+function typeEffect(text){
+    let i = 0;
+    function typing(){
+        if(i < text.length){
+            terminal.textContent += text.charAt(i);
+            i++;
+            setTimeout(typing, 35);
+        }
+    }
+    typing();
+}
+</script>
+
+</body>
+</html>
